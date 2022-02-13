@@ -1,64 +1,73 @@
-const waiting = 100;
-const min = 0;
-const max = 100;
-const size = 10;
-const random = makeRandom(min, max);
-const bars = getSizes();
-
 function timeout(time) {
     return new Promise(res => setTimeout(res, time));
 }
 
-function bubbleSort(arr) {
-    let noSwaps;
-    for (let i = arr.length; i > 0; i--){
-        noSwaps = true;
-        for (let j = 0; j < i - 1; j++) {
-            console.log(arr, arr[j], arr[j+1]);
-            if (arr[j] > arr[j+1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-                noSwaps = false;
-            }
-        }
-        if(noSwaps) break;
+let array = [];
+function createNewArray(barsCount) {
+    deletePrevious();
+
+    array = [];
+
+    for (let i = 0; i < barsCount; i++) {
+        array.push(Math.floor(Math.random() * 250) + 1);
     }
-    return arr;
+
+    const bars = document.querySelector("#bars");
+
+    for (let i = 0; i < barsCount; i++) {
+        const bar = document.createElement("div");
+        bar.style.height = `${array[i] * 2}px`;
+        bar.classList.add('bar');
+        bar.classList.add('flex-item');
+        bar.classList.add(`barNo${i}`);
+        bars.appendChild(bar);
+    }
 }
 
-function makeRandomSort(size, random) {
-    const arr = Array.from(new Array(size), random);
-    return arr;
+function deletePrevious() {
+    const bar = document.querySelector("#bars");
+    bar.innerHTML = '';
 }
 
-function getSizes() {
-    const arr = makeRandomSort(size, random);
+let arraySize = document.querySelector('#array-size');
+arraySize.addEventListener('input', () => {
+    createNewArray(parseInt(arraySize.value));
+});
 
-    return arr.map(x => ({
-        value: x,
-        size: x * 20
-    }));
-}
-
-function start() {
-
-}
-
-function makeVisual(bars) {
-    const button = document.getElementById('button');
-    const container = document.getElementById('container');
-    button.addEventListener("click", start);
+const newSort = document.querySelector(".new-sort");
+newSort.addEventListener("click", () => { 
     
-    bars.forEach(bar => {
-        const singleBar = document.createElement('div');
-        singleBar.classList.add('single-bar');
-        singleBar.style.height = `${bar.size}px`;
-        container.appendChild(singleBar);
-    });
+    createNewArray(arraySize.value);
+    
 
+});
+
+function swap(firstElement, secondElement) {
+    let temp = firstElement.style.height;
+    firstElement.style.height = secondElement.style.height;
+    secondElement.style.height = temp;
 }
 
-function makeRandom(min, max) {
-    return () => Math.floor(Math.random() * (max - min) + min);
+async function bubbleSort() {
+    const elements = document.querySelectorAll(".bar");
+    for(let i = 0; i < elements.length-1; i++){
+        for(let j = 0; j < elements.length-i-1; j++){
+            elements[j].style.background = 'blue';
+            elements[j+1].style.background = 'blue';
+            if(parseInt(elements[j].style.height) > parseInt(elements[j+1].style.height)){
+                await timeout(100);
+                swap(elements[j], elements[j+1]);
+            }
+            elements[j].style.background = 'cyan';
+            elements[j+1].style.background = 'cyan';
+        }
+        elements[elements.length-1-i].style.background = 'green';
+    }
+    elements[0].style.background = 'green';
 }
+
+
+const startSortingButton = document.querySelector(".sorting");
+startSortingButton.addEventListener('click', async function(){
+    await bubbleSort();
+});

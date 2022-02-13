@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <title>Bubble Sort</title>
 </head>
 <body>
-    <script src="./index.js"></script>
-    <button id="button">Начать</button>
-    <div class="container" id="container"></div>
+    <div class="parameteres-container">
+        <button type="button" class="new-sort">Создать массив</button>
+        <input id="array-size" type="range" min="10" max="50" step=1 value=20>
+        <button type="button" class="sorting">Начать сортировку</button>
+    </div>
+    <div id="bars" class="flex-container"></div>
+    <script src="index.js"></script>
 </body>
 </html>
