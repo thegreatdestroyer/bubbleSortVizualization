@@ -1,20 +1,18 @@
-function timeout(time) {
-    return new Promise(res => setTimeout(res, time));
+const timeout = (ms) => {
+    return new Promise(res => setTimeout(res, ms));
 }
 
 let array = [];
+const bars = document.querySelector("#bars");
+
 function createNewArray(barsCount) {
     deletePrevious();
 
-    array = [];
+    const array = []
 
     for (let i = 0; i < barsCount; i++) {
         array.push(Math.floor(Math.random() * 250) + 1);
-    }
 
-    const bars = document.querySelector("#bars");
-
-    for (let i = 0; i < barsCount; i++) {
         const bar = document.createElement("div");
         bar.style.height = `${array[i] * 2}px`;
         bar.classList.add('bar');
